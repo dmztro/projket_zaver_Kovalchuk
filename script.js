@@ -6,6 +6,8 @@ const polickoDalsichPostav = document.getElementById("polickoDalsichPostav");
 const karetniPolicko1 = document.getElementById("karetniPolicko1");
 const karetniPolicko2 = document.getElementById("karetniPolicko2");
 const karetniPolicko3 = document.getElementById("karetniPolicko3");
+const zdraviPostavy = document.getElementById("zdraviPostavy");
+const postava = document.getElementById("postava");
 class Postava {
     zobrazeniPostavy() {
     }

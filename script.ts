@@ -6,6 +6,9 @@ const karetniPolicko1 = document.getElementById("karetniPolicko1") as HTMLDivEle
 const karetniPolicko2 = document.getElementById("karetniPolicko2") as HTMLDivElement;
 const karetniPolicko3 = document.getElementById("karetniPolicko3") as HTMLDivElement;
 
+const zdraviPostavy = document.getElementById("zdraviPostavy")as HTMLDivElement;
+const postava = document.getElementById("postava")as HTMLDivElement;
+
 
 abstract class Postava{
     abstract zdraviPostavy():number;
