@@ -75,10 +75,11 @@ class Hrac {
         return this.zdravi;
     }
 }
-const polePostavl = ['Vlk', 'Zlodej', 'Obr'];
 let poleVsechPostav = []; //pole nadchzejicich postav
 function innit() {
     const hracHlavni = new Hrac;
 }
-function pridaniPostavy() {
+const pole = [new Vlk(), new Vlk()];
+// pridani podsav do poleVsechPostav
+function pridaniPostav() {
 }

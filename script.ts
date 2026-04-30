@@ -91,16 +91,18 @@ class Hrac{
     } 
 
 }
-const polePostavl:string[] =['Vlk', 'Zlodej','Obr'];
 
-let poleVsechPostav:string[]=[];//pole nadchzejicich postav
+let poleVsechPostav:Postava[]=[];//pole nadchzejicich postav
 
 
 function innit(){
     const hracHlavni =new Hrac;
 
-}
 
-function pridaniPostavy(){
-    
+}
+const pole:Postava[]=[new Vlk(), new Vlk()];
+
+// pridani podsav do poleVsechPostav
+function pridaniPostav():void{
+
 }
