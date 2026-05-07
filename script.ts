@@ -1,64 +1,102 @@
 const hlavniPlocha = document.getElementById("hlavniPlocha") as HTMLDivElement;
 const karetniPlocha = document.getElementById("karetniPlocha") as HTMLDivElement;
-const polickoPostavy = document.getElementById("polickoPostavy") as HTMLDivElement;
+const polickoPostavy = document.getElementById("polickoPostavy") as HTMLImageElement;
 const polickoDalsichPostav = document.getElementById("polickoDalsichPostav") as HTMLDivElement;
-const karetniPolicko1 = document.getElementById("karetniPolicko1") as HTMLDivElement;
-const karetniPolicko2 = document.getElementById("karetniPolicko2") as HTMLDivElement;
-const karetniPolicko3 = document.getElementById("karetniPolicko3") as HTMLDivElement;
+const karetniPolicko1 = document.getElementById("karetniPolicko1") as HTMLImageElement;
+const karetniPolicko2 = document.getElementById("karetniPolicko2") as HTMLImageElement;
+const karetniPolicko3 = document.getElementById("karetniPolicko3") as HTMLImageElement;
 
 const zdraviPostavy = document.getElementById("zdraviPostavy")as HTMLDivElement;
 const postava = document.getElementById("postava")as HTMLDivElement;
 
 
 abstract class Postava{
-    protected Zdravi:number = 0;
-    protected Damage:number = 0;
+    private Zdravi:number = 0;
+    private Damage:number = 0;
+
+    //abstrktni funkce, ktere prirazuji privatnim promenam vhodne hodnoty
+    abstract nastaveniZdravi():number;
+    abstract nastaveniDamage():number;
+
+    //zobrazeni postavy v img
+    abstract nastaveniVzhleduPostavy():string;
 
 
+    //inicizacni funkce postavy = nastaveni zdravi a damage
+    inicizacePostavy():void{
+        this.Zdravi = this.nastaveniZdravi();
+        this.Damage = this.nastaveniDamage();
+        this.zobrazeniPostavy();
 
-    nastaveniZdraviDamage(Zdravi:number, Damage:number):void{
-        this.Zdravi =Zdravi;
-        this.Damage =Damage;
     }
-
+    zobrazeniPostavy():void{
+        polickoPostavy.src=this.nastaveniVzhleduPostavy();
+    }
 
 
     zmenseniZdraviPostavy(damage:number):void{
-
-    }
-
-    zobrazeniPostavy():void{
-
+        this.Zdravi=-damage;
+        if (this.Zdravi<=0) {
+            this.zanikPostavy();
+        }
     }
 
     zanikPostavy():void{
-
+        polickoPostavy.src='';
+        poleVsechPostav.splice(0)
+        pridaniPostav();
+        poleVsechPostav[0].inicizacePostavy();
     }
 
-        zdraviPostavy(): number {
-         return 0;
+    zdraviPostavy(): number {
+         return this.Zdravi;
     }
     damagePostavy(): number {
-        return 0;
+        return this.Damage;
     }
 }
 
 class Vlk extends Postava{
-    nastaveniZdraviDamage(): void {
-        
+    nastaveniZdravi(): number {
+        let pointer:number = Math.ceil((Math.floor((Math.random()*20)*100))/100)
+        return 100-pointer;
+    }
+    nastaveniDamage(): number {
+        let pointer:number = Math.ceil((Math.floor((Math.random()*4)*100))/100)
+        return 5+pointer;
+    }
+    nastaveniVzhleduPostavy(): string {
+        return '';
+    }
+
+}
+class Zlodej extends Postava{
+    nastaveniZdravi(): number {
+        let pointer:number = Math.ceil((Math.floor((Math.random()*20)*100))/100)
+        return 120-pointer;
+    }
+    nastaveniDamage(): number {
+        let pointer:number = Math.ceil((Math.floor((Math.random()*5)*100))/100)
+        return 4+pointer;
+    }
+        nastaveniVzhleduPostavy(): string {
+        return '';
     }
 }
 
-class Zlodej extends Postava{
-
-}
-
 class Obr extends Postava{
-
+        nastaveniZdravi(): number {
+        let pointer:number = Math.ceil((Math.floor((Math.random()*20)*100))/100)
+        return 150-pointer;
+    }
+    nastaveniDamage(): number {
+        let pointer:number = Math.ceil((Math.floor((Math.random()*6)*100))/100)
+        return 7+pointer;
+    }
+        nastaveniVzhleduPostavy(): string {
+        return '';
+    }
 }
-
-
-
 
 
 abstract class Karta{
@@ -104,8 +142,9 @@ class Hrac{
 
 
 
-let poleVsechPostav:Postava[]=[];//pole nadchzejicich postav
+let poleVsechPostav:Postava[]=[];//hlavni pole postav
 
+let poleVsechKaret:Karta[]=[]//hlavni pole karet
 
 
 //funkce pro pridani postav do hlavniho pole
@@ -119,9 +158,20 @@ function vytvoreniPostavyObr():void{
     poleVsechPostav.push(new Obr())
 }
 
+// funkce pro pridani karet do hlavniho pole karet
+function vytvoreniKartyObcenaRana():void{
+    poleVsechKaret.push(new ObecnaRana())
+}
+function vytvoreniKartySilnaRana():void{
+    poleVsechKaret.push(new SilnaRana())
+}
+function vytvoreniKartyBlokovani():void{
+    poleVsechKaret.push(new Blokovani())
+}
 
 
-// pole odkud se vyiraji postavy do hlavniho pole
+
+// pole odkud se vybiraji postavy do hlavniho pole
 const poleZakladnichPostav = [vytvoreniPostavyVlk,vytvoreniPostavyZlodej,vytvoreniPostavyObr];
 
 
@@ -132,6 +182,23 @@ function pridaniPostav():void{
 }
 
 
+const poleZakladnichKaret=[vytvoreniKartySilnaRana,vytvoreniKartyObcenaRana,vytvoreniKartyBlokovani];
+
+function pridaniKaret():void{
+    let pointer:number = Math.ceil((Math.floor((Math.random()*3)*100))/100)
+    poleZakladnichKaret[pointer]();
+}
+
+
+function zobrazeniKaret():void{
+    for(let i =0; i<3; i++){
+        poleVsechKaret[i].zobrazeniKarty();
+    }
+}
+
+
+
+
 // prvni spustena funcke
 function innit(){
     const hracHlavni =new Hrac;
@@ -139,6 +206,10 @@ function innit(){
     for(let i =0; i<5; i++){
         pridaniPostav();
     }
-    poleVsechPostav[0].zobrazeniPostavy();
+    poleVsechPostav[0].inicizacePostavy();
+
+        for(let i =0; i<6; i++){
+        pridaniKaret();
+    }
 
 }
