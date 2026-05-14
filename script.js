@@ -85,9 +85,9 @@ class Karta {
     zobrazeniKarty() {
         return this.obrazekKarty;
     }
-    hraniKartou() {
-        poleKaretnichPolicek[pointerPoradiVybraneKarty].style.visibility = "hidden";
-        poleKaretnichPolicek[pointerPoradiVybraneKarty].style.pointerEvents = "none";
+    hraniKartou(pointer) {
+        poleKaretnichPolicek[pointer].style.visibility = "hidden";
+        poleKaretnichPolicek[pointer].style.pointerEvents = "none";
         pointerPoradiVybraneKarty = -1;
     }
 }
@@ -134,6 +134,7 @@ class Hrac {
     zmenseniZdravi(damage) {
         this.Zdravi = -damage;
         if (this.Zdravi < 0) {
+            this.prohraHrace;
         }
     }
     aktualniStavZdravi() {
@@ -142,6 +143,7 @@ class Hrac {
     prohraHrace() {
         poleVsechKaret = [];
         poleVsechPostav = [];
+        prohraHrace();
     }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -198,10 +200,10 @@ function zobrazeniKaret() {
 }
 function mazaniKaret() {
     for (let i = 0; i < 3; i++) {
-        poleKaretnichPolicek.splice(0);
+        poleVsechKaret.splice(0);
     }
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////
 //Oddeleni pro interkcni funcke
 let pointerPoradiVybraneKarty;
 function prevzatiPoradiKarty(poradiKarty) {
@@ -209,9 +211,16 @@ function prevzatiPoradiKarty(poradiKarty) {
 }
 let counterTahuKartou = 0;
 function interakceKartySPostavou() {
-    poleVsechPostav[0].zmenseniZdraviPostavy(poleVsechKaret[pointerPoradiVybraneKarty].damageKarty());
-    poleVsechKaret[pointerPoradiVybraneKarty].hraniKartou();
-    counterTahuKartou++;
+    if (pointerPoradiVybraneKarty != undefined) {
+        poleVsechPostav[0].zmenseniZdraviPostavy(poleVsechKaret[pointerPoradiVybraneKarty].damageKarty());
+        poleVsechKaret[pointerPoradiVybraneKarty].hraniKartou(pointerPoradiVybraneKarty);
+        counterTahuKartou++;
+        pointerPoradiVybraneKarty = undefined;
+        tahPostavy();
+    }
+    else {
+        console.log(`karta neni vybrana`);
+    }
     if (counterTahuKartou = 3) {
         naplneniPole3Karty();
         counterTahuKartou = 0;
@@ -219,10 +228,29 @@ function interakceKartySPostavou() {
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //Interakce postavy s hracem
-let soucanyHrac;
+function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+async function tahPostavy() {
+    for (let i = 0; i < 3; i++) {
+        poleKaretnichPolicek[i].style.pointerEvents = `none`;
+    }
+    if (soucasnyHrac != null)
+        soucasnyHrac.zmenseniZdravi(poleVsechPostav[0].damagePostavy());
+    await wait(100);
+    for (let i = 0; i < 3; i++) {
+        if (poleKaretnichPolicek[i].style.visibility === `visible`) {
+            poleKaretnichPolicek[i].style.pointerEvents = "auto";
+        }
+    }
+}
+function prohraHrace() {
+    soucasnyHrac = null;
+}
 // prvni spustena funcke
+let soucasnyHrac;
 function innit() {
-    soucanyHrac = new Hrac;
+    soucasnyHrac = new Hrac;
     for (let i = 0; i < 5; i++) {
         pridaniPostav();
     }
@@ -230,7 +258,4 @@ function innit() {
     for (let i = 0; i < 6; i++) {
         pridaniKaret();
     }
-}
-function prohraHrace() {
-    soucanyHrac = null;
 }
