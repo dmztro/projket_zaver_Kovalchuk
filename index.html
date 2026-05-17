@@ -14,7 +14,7 @@
         <div id="hlavniPlocha">
             <div id="polickoPostavy">
                 <div id = "zdraviPostavy"></div>
-                <img id="postava" src="" alt="Postava">
+                <img id="postava" src="" alt="Postava" onclick="interakceKartySPostavou()">
             </div>
 
             <div id="polickoDalsichPostav">
@@ -26,9 +26,9 @@
             </div>
         </div>
         <div id="karetniPlocha">
-            <img id="karetniPolicko1" class="Karta" src="" alt="Karta">
-            <img id="karetniPolicko2" class="Karta" src="" alt="Karta">
-            <img id="karetniPolicko3" class="Karta" src="" alt="Karta">
+            <img id="karetniPolicko1" class="Karta" src="" alt="Karta" onclick="prevzatiPoradiKarty(0)">
+            <img id="karetniPolicko2" class="Karta" src="" alt="Karta" onclick="prevzatiPoradiKarty(1)">
+            <img id="karetniPolicko3" class="Karta" src="" alt="Karta" onclick="prevzatiPoradiKarty(2)">
         </div>
     </main>
     <script src="script.js"></script>

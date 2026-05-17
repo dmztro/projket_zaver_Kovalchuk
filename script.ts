@@ -1,6 +1,6 @@
 const hlavniPlocha = document.getElementById("hlavniPlocha") as HTMLDivElement;
 const karetniPlocha = document.getElementById("karetniPlocha") as HTMLDivElement;
-const polickoPostavy = document.getElementById("polickoPostavy") as HTMLImageElement;
+const polickoPostavy = document.getElementById("postava") as HTMLImageElement;
 const polickoDalsichPostav = document.getElementById("polickoDalsichPostav") as HTMLDivElement;
 const karetniPolicko1 = document.getElementById("karetniPolicko1") as HTMLImageElement;
 const karetniPolicko2 = document.getElementById("karetniPolicko2") as HTMLImageElement;
@@ -15,6 +15,11 @@ abstract class Postava{
     private Damage:number = 0;
 
     //abstrktni funkce, ktere prirazuji privatnim promenam vhodne hodnoty
+    constructor(){
+        this.Zdravi = this.nastaveniZdravi();
+        this.Damage = this.nastaveniDamage();
+
+    }
     abstract nastaveniZdravi():number;
     abstract nastaveniDamage():number;
 
@@ -35,17 +40,17 @@ abstract class Postava{
 
 
     zmenseniZdraviPostavy(damage:number):void{
-        this.Zdravi=-damage;
+        this.Zdravi-=damage;
         if (this.Zdravi<=0) {
             this.zanikPostavy();
         }
     }
 
     zanikPostavy():void{
+        console.log(`zanik postavy`)
         polickoPostavy.src='';
-        poleVsechPostav.splice(0);
+        poleVsechPostav.splice(0,1);
         pridaniPostav();
-        naplneniPole3Karty();
         poleVsechPostav[0].inicizacePostavy();
     }
 
@@ -67,7 +72,7 @@ class Vlk extends Postava{
         return 5+pointer;
     }
     nastaveniVzhleduPostavy(): string {
-        return '';
+        return '/imges/img1.jpg';
     }
 
 }
@@ -81,7 +86,7 @@ class Zlodej extends Postava{
         return 4+pointer;
     }
         nastaveniVzhleduPostavy(): string {
-        return '';
+        return '/imges/img2.jpg';
     }
 }
 
@@ -95,7 +100,7 @@ class Obr extends Postava{
         return 7+pointer;
     }
         nastaveniVzhleduPostavy(): string {
-        return '';
+        return '/imges/img3.jpg';
     }
 }
 
@@ -108,23 +113,24 @@ abstract class Karta{
     zobrazeniKarty():string{
         return this.obrazekKarty;
     }
-    hraniKartou(pointer:number):void{
-        
+    hraniKartou(pointer:number):number{
         poleKaretnichPolicek[pointer].style.visibility ="hidden";
         poleKaretnichPolicek[pointer].style.pointerEvents="none" ;
-
-        pointerPoradiVybraneKarty=-1;
-
+        pointerPoradiVybraneKarty=undefined;
+        console.log(poleVsechPostav[0]);
+        let a:number =this.damageKarty();
+        console.log(a);
+        return a;
     }
 }
 class SilnaRana extends Karta{
 
-    obrazekKarty=``;
+    obrazekKarty=`/imges/img1.jpg`;
     private Damage:number= 40;
     damageKarty(): number {
         let pointer:number = Math.ceil((Math.floor((Math.random()*10)*100))/100)
-        if(pointer<3){
-            return this.Damage*2;
+        if(pointer<5){
+            return this.Damage*0;
         }
         else{
             return this.Damage;
@@ -132,12 +138,12 @@ class SilnaRana extends Karta{
     }
 }
 class ObecnaRana extends Karta{
-    obrazekKarty=``;
+    obrazekKarty=`/imges/img2.jpg`;
     private Damage:number= 10;
     damageKarty(): number {
-        let pointer:number = Math.ceil((Math.floor((Math.random()*2)*100))/100)
-        if (pointer<2) {
-           return this.Damage*0;
+        let pointer:number = Math.ceil((Math.floor((Math.random()*10)*100))/100)
+        if (pointer<5) {
+           return this.Damage*2;
         }
         else{
             return this.Damage;
@@ -146,12 +152,19 @@ class ObecnaRana extends Karta{
 }
 
 class Blokovani extends Karta{
-    obrazekKarty=``;
+    obrazekKarty=`/imges/img3.jpg`;
     damageKarty(): number {
         return 0;
     }
+    hraniKartou(pointer: number): number {
+        poleKaretnichPolicek[pointer].style.visibility ="hidden";
+        poleKaretnichPolicek[pointer].style.pointerEvents="none" ;
+        pointerPoradiVybraneKarty=undefined;
+        this.blokovani();
+        return 0;
+    }
     blokovani():void{
-        
+        soucasnyHrac?.blokovaniFunkce();
     }
     
 }
@@ -160,14 +173,20 @@ class Blokovani extends Karta{
 //////////////////////////////////////////////////////////////////////////////////////////////////
 class Hrac{
     private Zdravi:number;
-
+    private blokovani:boolean = false;
     constructor(){
         this.Zdravi=100;
     }
     zmenseniZdravi(damage:number):void{
-        this.Zdravi=-damage;
-        if (this.Zdravi<0) {
-            this.prohraHrace
+        if (this.blokovani ==true) {
+            console.log(`hrac blokuje damage`)
+            this.blokovani=false;
+        }
+        else{
+            this.Zdravi-=damage;
+            if (this.Zdravi<0) {
+                this.prohraHrace();
+            }
         }
     }
     aktualniStavZdravi():number{
@@ -177,6 +196,9 @@ class Hrac{
         poleVsechKaret=[];
         poleVsechPostav=[];
         prohraHrace();
+    }
+    blokovaniFunkce(){
+        this.blokovani=true;
     }
 }
 
@@ -200,7 +222,7 @@ const poleZakladnichPostav = [vytvoreniPostavyVlk,vytvoreniPostavyZlodej,vytvore
 
 // pridani podsav do poleVsechPostav
 function pridaniPostav():void{
-    let pointer:number = Math.ceil((Math.floor((Math.random()*3)*100))/100)
+    let pointer:number = Math.floor((Math.floor((Math.random()*3)*100))/100)
     poleZakladnichPostav[pointer]();
 }
 
@@ -225,19 +247,16 @@ let poleVsechKaret:Karta[]=[]//hlavni pole karet
 let poleKaretnichPolicek:HTMLImageElement[]=[karetniPolicko1,karetniPolicko2,karetniPolicko3];//pole z odkazem na imistemi obrazku na strance
 const poleZakladnichKaret=[vytvoreniKartySilnaRana,vytvoreniKartyObcenaRana,vytvoreniKartyBlokovani];
 
-function pridaniKaret():void{
-    let pointer:number = Math.ceil((Math.floor((Math.random()*3)*100))/100)
-    poleZakladnichKaret[pointer]();
-}
+
 function naplneniPole3Karty():void{
-    mazaniKaret();
     for(let i =0; i<3; i++){
-        pridaniKaret();
+        let pointer:number = Math.floor((Math.floor((Math.random()*3)*100))/100)
+        poleZakladnichKaret[pointer]();
     }
-    zobrazeniKaret();
 }
 
-function zobrazeniKaret():void{
+async function zobrazeniKaret():Promise<void>{
+    await wait(500);
     for(let i =0; i<3; i++){
         poleKaretnichPolicek[i].src=poleVsechKaret[i].zobrazeniKarty();
         poleKaretnichPolicek[i].style.visibility="visible";
@@ -246,7 +265,7 @@ function zobrazeniKaret():void{
 }
 function mazaniKaret(){
     for(let i =0; i<3; i++){
-        poleVsechKaret.splice(0);
+        poleVsechKaret.splice(0,1);
     }
 }
 
@@ -266,38 +285,42 @@ let counterTahuKartou:number = 0;
 function interakceKartySPostavou():void{
     if( pointerPoradiVybraneKarty != undefined){
 
-        poleVsechPostav[0].zmenseniZdraviPostavy(poleVsechKaret[pointerPoradiVybraneKarty].damageKarty());
-        poleVsechKaret[pointerPoradiVybraneKarty].hraniKartou(pointerPoradiVybraneKarty);
+        poleVsechPostav[0].zmenseniZdraviPostavy(poleVsechKaret[pointerPoradiVybraneKarty].hraniKartou(pointerPoradiVybraneKarty));
         counterTahuKartou++
         pointerPoradiVybraneKarty=undefined;
         tahPostavy();
+        console.log(counterTahuKartou)
     }
     else{
         console.log(`karta neni vybrana`)
     }
-    if (counterTahuKartou=3) {
+    if (counterTahuKartou==3) {
         naplneniPole3Karty();
+        mazaniKaret();
+        zobrazeniKaret();
         counterTahuKartou=0;
     }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //Interakce postavy s hracem
 function wait(ms: number): Promise<void> {
-return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 async function tahPostavy(){
+    console.log(`tah posatvy`)
     for(let i =0; i<3; i++){
         poleKaretnichPolicek[i].style.pointerEvents = `none`;
     }
     if(soucasnyHrac!=null)soucasnyHrac.zmenseniZdravi(poleVsechPostav[0].damagePostavy());
-    await wait(100);
+    console.log(`zacet`)
+    await wait(500);
         for(let i =0; i<3; i++){
         if(poleKaretnichPolicek[i].style.visibility === `visible`){
             poleKaretnichPolicek[i].style.pointerEvents="auto";
         }
     }
-
+    console.log(`konce`)
 }
 
 
@@ -310,14 +333,16 @@ let soucasnyHrac:Hrac|null;
 
 function innit(){
     soucasnyHrac =new Hrac;
-    
+    console.log(soucasnyHrac?.aktualniStavZdravi());
     for(let i =0; i<5; i++){
         pridaniPostav();
     }
     poleVsechPostav[0].inicizacePostavy();
     
-        for(let i =0; i<6; i++){
-        pridaniKaret();
+        for(let i =0; i<2; i++){
+        naplneniPole3Karty();
     }
-
+    zobrazeniKaret();
 }
+
+innit();
