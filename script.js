@@ -57,29 +57,38 @@ var karetniPolicko1 = document.getElementById("karetniPolicko1");
 var karetniPolicko2 = document.getElementById("karetniPolicko2");
 var karetniPolicko3 = document.getElementById("karetniPolicko3");
 var zdraviPostavy = document.getElementById("zdraviPostavy");
+var zdraviHrace = document.getElementById("zdraviHrace");
+var healthBarHrace = document.getElementById("healthBarHrace");
 var postava = document.getElementById("postava");
+var zdraviHrcaeCislo = document.getElementById("zdraviHrcaeCislo");
 var Postava = /** @class */ (function () {
     //abstrktni funkce, ktere prirazuji privatnim promenam vhodne hodnoty
     function Postava() {
-        this.Zdravi = 0;
-        this.Damage = 0;
         this.Zdravi = this.nastaveniZdravi();
         this.Damage = this.nastaveniDamage();
+        this.Name = this.nastaveniJmenaPostavy();
+        this.pocatecniZdravi = this.Zdravi;
     }
     //inicizacni funkce postavy = nastaveni zdravi a damage
     Postava.prototype.inicizacePostavy = function () {
+        zdraviPostavy.style.width = "100%";
+        zdraviPostavy.innerText = "".concat(this.Zdravi);
         this.Zdravi = this.nastaveniZdravi();
         this.Damage = this.nastaveniDamage();
         this.zobrazeniPostavy();
     };
     Postava.prototype.zobrazeniPostavy = function () {
+        polickoPostavy.className = "".concat(this.Name);
         polickoPostavy.src = this.nastaveniVzhleduPostavy();
     };
     Postava.prototype.zmenseniZdraviPostavy = function (damage) {
         this.Zdravi -= damage;
         if (this.Zdravi <= 0) {
             this.zanikPostavy();
+            throw new Error();
         }
+        zdraviPostavy.innerText = "".concat(this.Zdravi);
+        zdraviPostavy.style.width = "".concat((this.Zdravi / this.pocatecniZdravi) * 100, "%");
     };
     Postava.prototype.zanikPostavy = function () {
         console.log("zanik postavy");
@@ -101,6 +110,9 @@ var Vlk = /** @class */ (function (_super) {
     function Vlk() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    Vlk.prototype.nastaveniJmenaPostavy = function () {
+        return "Vlk";
+    };
     Vlk.prototype.nastaveniZdravi = function () {
         var pointer = Math.ceil((Math.floor((Math.random() * 20) * 100)) / 100);
         return 100 - pointer;
@@ -110,7 +122,7 @@ var Vlk = /** @class */ (function (_super) {
         return 5 + pointer;
     };
     Vlk.prototype.nastaveniVzhleduPostavy = function () {
-        return '/imges/img1.jpg';
+        return '/imges/img_Vlk.png';
     };
     return Vlk;
 }(Postava));
@@ -119,6 +131,9 @@ var Zlodej = /** @class */ (function (_super) {
     function Zlodej() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    Zlodej.prototype.nastaveniJmenaPostavy = function () {
+        return "Zlodej";
+    };
     Zlodej.prototype.nastaveniZdravi = function () {
         var pointer = Math.ceil((Math.floor((Math.random() * 20) * 100)) / 100);
         return 120 - pointer;
@@ -128,7 +143,7 @@ var Zlodej = /** @class */ (function (_super) {
         return 4 + pointer;
     };
     Zlodej.prototype.nastaveniVzhleduPostavy = function () {
-        return '/imges/img2.jpg';
+        return '/imges/img_Zlodej.png';
     };
     return Zlodej;
 }(Postava));
@@ -137,6 +152,9 @@ var Obr = /** @class */ (function (_super) {
     function Obr() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    Obr.prototype.nastaveniJmenaPostavy = function () {
+        return "Obr";
+    };
     Obr.prototype.nastaveniZdravi = function () {
         var pointer = Math.ceil((Math.floor((Math.random() * 20) * 100)) / 100);
         return 150 - pointer;
@@ -146,7 +164,7 @@ var Obr = /** @class */ (function (_super) {
         return 7 + pointer;
     };
     Obr.prototype.nastaveniVzhleduPostavy = function () {
-        return '/imges/img3.jpg';
+        return '/imges/img_Obr.png';
     };
     return Obr;
 }(Postava));
@@ -234,6 +252,8 @@ var Hrac = /** @class */ (function () {
     function Hrac() {
         this.blokovani = false;
         this.Zdravi = 100;
+        zdraviHrcaeCislo.innerText = "".concat(this.Zdravi);
+        healthBarHrace.style.height = "100%";
     }
     Hrac.prototype.zmenseniZdravi = function (damage) {
         if (this.blokovani == true) {
@@ -244,7 +264,10 @@ var Hrac = /** @class */ (function () {
             this.Zdravi -= damage;
             if (this.Zdravi < 0) {
                 this.prohraHrace();
+                throw new Error();
             }
+            zdraviHrcaeCislo.innerText = "".concat(this.Zdravi);
+            healthBarHrace.style.height = "".concat(this.Zdravi, "%");
         }
     };
     Hrac.prototype.aktualniStavZdravi = function () {
@@ -332,7 +355,10 @@ function prevzatiPoradiKarty(poradiKarty) {
 var counterTahuKartou = 0;
 function interakceKartySPostavou() {
     if (pointerPoradiVybraneKarty != undefined) {
-        poleVsechPostav[0].zmenseniZdraviPostavy(poleVsechKaret[pointerPoradiVybraneKarty].hraniKartou(pointerPoradiVybraneKarty));
+        try {
+            poleVsechPostav[0].zmenseniZdraviPostavy(poleVsechKaret[pointerPoradiVybraneKarty].hraniKartou(pointerPoradiVybraneKarty));
+        }
+        catch (_a) { }
         counterTahuKartou++;
         pointerPoradiVybraneKarty = undefined;
         tahPostavy();
@@ -363,8 +389,12 @@ function tahPostavy() {
                     for (i = 0; i < 3; i++) {
                         poleKaretnichPolicek[i].style.pointerEvents = "none";
                     }
-                    if (soucasnyHrac != null)
-                        soucasnyHrac.zmenseniZdravi(poleVsechPostav[0].damagePostavy());
+                    try {
+                        if (soucasnyHrac != null)
+                            soucasnyHrac.zmenseniZdravi(poleVsechPostav[0].damagePostavy());
+                    }
+                    catch (_b) { }
+                    ;
                     console.log("zacet");
                     return [4 /*yield*/, wait(500)];
                 case 1:

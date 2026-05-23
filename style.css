@@ -3,41 +3,84 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    border:1px solid black;
+    border:0px solid black;
+}
+body {
+    box-sizing: border-box;
+    overflow: hidden;
 }
 main {
-    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
+    box-sizing: border-box;
 }
 #hlavniPlocha {
     width: 100%;
     height: 60%;
-    background-color: rgb(223, 0, 0);
+    background-color: rgba(0, 0, 0, 0.096);
     display: block;
     justify-content: center;
     align-items: center;
 }
+#background_image{
+    position: absolute;
+    width: 100%;
+    height: 70vh;
+    z-index: -1;
+}
+
 
 #karetniPlocha {
+    box-sizing: border-box;
     width: 100%;
     height: 40%;
-    background-color: rgb(115, 245, 121);
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 1px solid black;
 }
+#kartniPlocha_img{
+    position: absolute;
+    width: 100%;
+    height:50%;
+    z-index: -1;
+    bottom:0;
+}
+#polickoSkastami{
+    z-index: 4;
+    box-sizing: border-box;
+    bottom: -30%;
+    position: absolute;
+    border: px solid black;
+    padding: 0;
+    width: 700px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    transition: all 0.5s ease;
+}
+#polickoSkastami:hover{
+    scale: calc(1.2);
+    bottom: 5%;
+
+}
+
 .Karta {
+    cursor: pointer;
     pointer-events: auto;
     position: relative;
-    top: -5%;
-    width: 14%;
-    height: 90%;
+    top: 10%;
+    width: 40%;
+    height: 100%;
     background-color: rgb(0, 0, 0);
-    margin: 0 20px;
+    margin: 0 10px;
 }
+
 #polickoDalsichPostav{
+    background-color: rgba(0, 0, 0, 0.452);
     position: absolute;
     width: 5%;
     height: 40%;
@@ -50,28 +93,81 @@ main {
     width: 40px;
     height: 10px;
     background-color: rgb(0, 0, 0);
-    margin: 50px auto;
+    margin: 50% auto;
 }
-
 #polickoPostavy {
+    cursor: pointer;
     position: absolute;
-    width: 400px;
-    height: 400px;
-    top: 15%;
+    width: 250px;
+    height: 50%;
+    top: 7%;
     justify-self: center;
-    background-color: rgb(115, 245, 121);
 }
-#postava {
-    position: relative;
-    width: 200px;
+#zdraviHrace {
+    text-align: center;
+    overflow: hidden;
+    font-family: pixelify sans, sans-serif;
+    position: absolute;
+    width: 250px;
     height: 250px;
-    background-color: rgb(235, 1, 184);
-
+    top: 66%;
+    left: 3%;
+    border-radius:45%;
+    border: 3px solid rgb(0, 0, 0);
+    background-color: rgba(201, 192, 192, 0.532);
+    z-index: 2;
+}
+#zdraviHrcaeCislo{
+    top: 40%;
+    left: 40%;
+    position: absolute;
+    z-index: 3;
+    font-size: 30px;
+    color: black;
+}
+#healthBarHrace{
+    border: 1px solid black;
+    bottom: 0;
+    position: relative;
+    font-family: pixelify sans, sans-serif;
+    width: 250px;
+    height: 100%;
+    z-index: 1;
+    background-color: rgb(255, 0, 0);
 }
 #zdraviPostavy {
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 20px;
+    text-align: center;
     position: relative;
     width: 100%;
-    height: 50px;
+    height: 25px;
     top: 0px;
-    background-color: rgb(0, 0, 0);
+    border-radius: 3px;
+    border: 2px solid black;
+    background-color: rgb(255, 0, 0);
+}
+.Vlk{
+    right: 10%;
+    width:150%;
+    position: 
+    relative;
+    background-color: rgba(235, 1, 184, 0);
+
+}
+.Zlodej{
+    height: 180%;
+    bottom:52%;
+    right: 70%;
+    position: 
+    relative;
+    background-color: rgba(235, 1, 184, 0);
+}
+.Obr{
+    height: 160%;
+    bottom: 45%;
+    right: 50%;
+    position: 
+    relative;
+    background-color: rgba(235, 1, 184, 0);
 }

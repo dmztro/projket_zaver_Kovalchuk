@@ -7,28 +7,27 @@
     <meta name="keywords" content="HTML, šablona, základní, web">
     <meta name="author" content="Vaše Jméno">
     <title>Základní webová šablona</title>
-    <link rel="stylesheet" href="style.css">   
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
 </head>
 <body>
     <main>
+        <img id ="background_image" src="imges/background_img.png" alt="">
         <div id="hlavniPlocha">
             <div id="polickoPostavy">
                 <div id = "zdraviPostavy"></div>
                 <img id="postava" src="" alt="Postava" onclick="interakceKartySPostavou()">
             </div>
-
-            <div id="polickoDalsichPostav">
-                <div id="polickoDalsiPostava1" class="polickoDalsichPostav"></div>
-                <div id="polickoDalsiPostava2" class="polickoDalsichPostav"></div>
-                <div id="polickoDalsiPostava3" class="polickoDalsichPostav"></div>
-                <div id="polickoDalsiPostava4" class="polickoDalsichPostav"></div>
-                <div id="polickoDalsiPostava5" class="polickoDalsichPostav"></div>
-            </div>
-        </div>
         <div id="karetniPlocha">
+            <div id="zdraviHrace"><p id="zdraviHrcaeCislo"></p><div id="healthBarHrace"></div></div>
+            <img id ="kartniPlocha_img" src="imges/img_karetniPlocha.png" alt="">
+            <div id="polickoSkastami">
             <img id="karetniPolicko1" class="Karta" src="" alt="Karta" onclick="prevzatiPoradiKarty(0)">
             <img id="karetniPolicko2" class="Karta" src="" alt="Karta" onclick="prevzatiPoradiKarty(1)">
             <img id="karetniPolicko3" class="Karta" src="" alt="Karta" onclick="prevzatiPoradiKarty(2)">
+            </div>
         </div>
     </main>
     <script src="script.js"></script>
