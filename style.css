@@ -69,6 +69,7 @@ main {
 }
 
 .Karta {
+    object-fit: fill;
     cursor: pointer;
     pointer-events: auto;
     position: relative;

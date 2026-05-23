@@ -191,7 +191,7 @@ var SilnaRana = /** @class */ (function (_super) {
     __extends(SilnaRana, _super);
     function SilnaRana() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.obrazekKarty = "/imges/img1.jpg";
+        _this.obrazekKarty = "/imges/silna_rana_img.png";
         _this.Damage = 40;
         return _this;
     }
@@ -210,7 +210,7 @@ var ObecnaRana = /** @class */ (function (_super) {
     __extends(ObecnaRana, _super);
     function ObecnaRana() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.obrazekKarty = "/imges/img2.jpg";
+        _this.obrazekKarty = "/imges/obecna_rana_img.png";
         _this.Damage = 10;
         return _this;
     }
@@ -229,7 +229,7 @@ var Blokovani = /** @class */ (function (_super) {
     __extends(Blokovani, _super);
     function Blokovani() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.obrazekKarty = "/imges/img3.jpg";
+        _this.obrazekKarty = "/imges/blokovani_img.png";
         return _this;
     }
     Blokovani.prototype.damageKarty = function () {

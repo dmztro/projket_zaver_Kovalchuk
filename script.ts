@@ -149,7 +149,7 @@ abstract class Karta{
 }
 class SilnaRana extends Karta{
 
-    obrazekKarty=`/imges/img1.jpg`;
+    obrazekKarty=`/imges/silna_rana_img.png`;
     private Damage:number= 40;
     damageKarty(): number {
         let pointer:number = Math.ceil((Math.floor((Math.random()*10)*100))/100)
@@ -162,7 +162,7 @@ class SilnaRana extends Karta{
     }
 }
 class ObecnaRana extends Karta{
-    obrazekKarty=`/imges/img2.jpg`;
+    obrazekKarty=`/imges/obecna_rana_img.png`;
     private Damage:number= 10;
     damageKarty(): number {
         let pointer:number = Math.ceil((Math.floor((Math.random()*10)*100))/100)
@@ -176,7 +176,7 @@ class ObecnaRana extends Karta{
 }
 
 class Blokovani extends Karta{
-    obrazekKarty=`/imges/img3.jpg`;
+    obrazekKarty=`/imges/blokovani_img.png`;
     damageKarty(): number {
         return 0;
     }
