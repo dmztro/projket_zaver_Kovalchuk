@@ -8,7 +8,6 @@ const karetniPolicko3 = document.getElementById("karetniPolicko3") as HTMLImageE
 
 const zdraviPostavy = document.getElementById("zdraviPostavy")as HTMLDivElement;
 const zdraviHrace = document.getElementById("zdraviHrace")as HTMLDivElement;
-const healthBarHrace = document.getElementById("healthBarHrace")as HTMLDivElement;
 const postava = document.getElementById("postava")as HTMLDivElement;
 
 const zdraviHrcaeCislo = document.getElementById("zdraviHrcaeCislo")as HTMLParagraphElement;
@@ -201,7 +200,6 @@ class Hrac{
     constructor(){
         this.Zdravi=100;
         zdraviHrcaeCislo.innerText=`${this.Zdravi}`;
-        healthBarHrace.style.height=`100%`;
     }
     zmenseniZdravi(damage:number):void{
         if (this.blokovani ==true) {
@@ -216,7 +214,6 @@ class Hrac{
                 
             }
             zdraviHrcaeCislo.innerText=`${this.Zdravi}`;
-            healthBarHrace.style.height=`${this.Zdravi}%`
         }
     }
     aktualniStavZdravi():number{
