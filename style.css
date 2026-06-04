@@ -156,6 +156,7 @@ body {
 }
 @media (max-width:600px) {
     #polickoSkastami{
+        bottom: -15%;
         max-width: 60%;
         max-height: 300px;
     }
