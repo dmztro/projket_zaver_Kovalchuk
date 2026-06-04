@@ -1,16 +1,16 @@
 const hlavniPlocha = document.getElementById("hlavniPlocha") as HTMLDivElement;
 const karetniPlocha = document.getElementById("karetniPlocha") as HTMLDivElement;
 const polickoPostavy = document.getElementById("postava") as HTMLImageElement;
-const polickoDalsichPostav = document.getElementById("polickoDalsichPostav") as HTMLDivElement;
 const karetniPolicko1 = document.getElementById("karetniPolicko1") as HTMLImageElement;
 const karetniPolicko2 = document.getElementById("karetniPolicko2") as HTMLImageElement;
 const karetniPolicko3 = document.getElementById("karetniPolicko3") as HTMLImageElement;
 
+const gameOverBackground = document.getElementById("gameOverBackground")as HTMLDivElement;
 const zdraviPostavy = document.getElementById("zdraviPostavy")as HTMLDivElement;
 const zdraviHrace = document.getElementById("zdraviHrace")as HTMLDivElement;
 const postava = document.getElementById("postava")as HTMLDivElement;
 
-const zdraviHrcaeCislo = document.getElementById("zdraviHrcaeCislo")as HTMLParagraphElement;
+const zdraviHraceCislo = document.getElementById("zdraviHrcaeCislo")as HTMLParagraphElement;
 
 abstract class Postava{
     private pocatecniZdravi:number;
@@ -199,7 +199,7 @@ class Hrac{
     private blokovani:boolean = false;
     constructor(){
         this.Zdravi=100;
-        zdraviHrcaeCislo.innerText=`${this.Zdravi}`;
+        zdraviHraceCislo.innerText=`${this.Zdravi}`;
     }
     zmenseniZdravi(damage:number):void{
         if (this.blokovani ==true) {
@@ -209,11 +209,12 @@ class Hrac{
         else{
             this.Zdravi-=damage;
             if (this.Zdravi<0) {
+                zdraviHraceCislo.innerText = `0`;
                 this.prohraHrace();
                 throw new Error();
                 
             }
-            zdraviHrcaeCislo.innerText=`${this.Zdravi}`;
+            zdraviHraceCislo.innerText=`${this.Zdravi}`;
         }
     }
     aktualniStavZdravi():number{
@@ -222,7 +223,7 @@ class Hrac{
     prohraHrace():void{
         poleVsechKaret=[];
         poleVsechPostav=[];
-        prohraHrace();
+        prohraHraceGlobal();
     }
     blokovaniFunkce(){
         this.blokovani=true;
@@ -345,20 +346,24 @@ async function tahPostavy(){
     if(soucasnyHrac!=null)soucasnyHrac.zmenseniZdravi(poleVsechPostav[0].damagePostavy());
     }
     catch{};
-    console.log(`zacet`)
     await wait(500);
         for(let i =0; i<3; i++){
         if(poleKaretnichPolicek[i].style.visibility === `visible`){
             poleKaretnichPolicek[i].style.pointerEvents="auto";
         }
     }
-    console.log(`konce`)
 }
 
 
 
-function prohraHrace():void{
+function prohraHraceGlobal():void{
     soucasnyHrac= null;
+    gameOverBackground.style.display = `block`;
+    console.log("prohra hrace")
+    for(let i =0; i<3; i++){
+        poleKaretnichPolicek[i].style.pointerEvents = `none`;
+    }
+
 }
 // prvni spustena funcke
 let soucasnyHrac:Hrac|null;
