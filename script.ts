@@ -9,6 +9,7 @@ const gameOverBackground = document.getElementById("gameOverBackground")as HTMLD
 const zdraviPostavy = document.getElementById("zdraviPostavy")as HTMLDivElement;
 const zdraviHrace = document.getElementById("zdraviHrace")as HTMLDivElement;
 const postava = document.getElementById("postava")as HTMLDivElement;
+const postavaName = document.getElementById("postavaName")as HTMLDivElement;
 
 const zdraviHraceCislo = document.getElementById("zdraviHrcaeCislo")as HTMLParagraphElement;
 
@@ -19,22 +20,20 @@ abstract class Postava{
     private Name:string;
 
     //abstrktni funkce, ktere prirazuji privatnim promenam vhodne hodnoty
-    constructor(){
+    abstract nastaveniZdravi():number;
+    abstract nastaveniDamage():number;
+    //zobrazeni postavy v img
+    abstract nastaveniVzhleduPostavy:string;
+    abstract nastaveniJmenaPostavy():string;
+
+    //constructor
+        constructor(){
         this.Zdravi = this.nastaveniZdravi();
         this.Damage = this.nastaveniDamage();
         this.Name = this.nastaveniJmenaPostavy();
         this.pocatecniZdravi = this.Zdravi;
 
     }
-    abstract nastaveniZdravi():number;
-    abstract nastaveniDamage():number;
-
-    //zobrazeni postavy v img
-    abstract nastaveniVzhleduPostavy():string;
-
-    abstract nastaveniJmenaPostavy():string;
-
-
     //inicizacni funkce postavy = nastaveni zdravi a damage
     inicizacePostavy():void{
         zdraviPostavy.style.width=`100%`;
@@ -45,8 +44,9 @@ abstract class Postava{
 
     }
     zobrazeniPostavy():void{
+        postavaName.innerText=this.Name;
         polickoPostavy.className = `${this.Name}`;
-        polickoPostavy.src=this.nastaveniVzhleduPostavy();
+        polickoPostavy.src=this.nastaveniVzhleduPostavy;
     }
 
 
@@ -67,18 +67,14 @@ abstract class Postava{
         pridaniPostav();
         poleVsechPostav[0].inicizacePostavy();
     }
-
-    zdraviPostavy(): number {
-         return this.Zdravi;
-    }
     damagePostavy(): number {
         return this.Damage;
     }
 }
 
 class Vlk extends Postava{
-    nastaveniJmenaPostavy(): string {
-        return `Vlk`;
+    nastaveniJmenaPostavy(){
+        return `Vlk`
     }
     nastaveniZdravi(): number {
         let pointer:number = Math.ceil((Math.floor((Math.random()*20)*100))/100)
@@ -88,15 +84,13 @@ class Vlk extends Postava{
         let pointer:number = Math.ceil((Math.floor((Math.random()*4)*100))/100)
         return 5+pointer;
     }
-    nastaveniVzhleduPostavy(): string {
-        return '/imges/img_Vlk.png';
-    }
+    nastaveniVzhleduPostavy ='/imges/img_Vlk.png';
 
 }
 class Zlodej extends Postava{
-        nastaveniJmenaPostavy(): string {
-        return `Zlodej`;
-    }
+        nastaveniJmenaPostavy(){
+            return `Zlodej`
+        }
     nastaveniZdravi(): number {
         let pointer:number = Math.ceil((Math.floor((Math.random()*20)*100))/100)
         return 120-pointer;
@@ -105,15 +99,13 @@ class Zlodej extends Postava{
         let pointer:number = Math.ceil((Math.floor((Math.random()*5)*100))/100)
         return 4+pointer;
     }
-        nastaveniVzhleduPostavy(): string {
-        return '/imges/img_Zlodej.png';
-    }
+        nastaveniVzhleduPostavy = '/imges/img_Zlodej.png';
 }
 
 class Obr extends Postava{
-        nastaveniJmenaPostavy(): string {
-        return `Obr`;
-    }
+        nastaveniJmenaPostavy(){
+            return `Obr`
+        }
         nastaveniZdravi(): number {
         let pointer:number = Math.ceil((Math.floor((Math.random()*20)*100))/100)
         return 150-pointer;
@@ -122,9 +114,7 @@ class Obr extends Postava{
         let pointer:number = Math.ceil((Math.floor((Math.random()*6)*100))/100)
         return 7+pointer;
     }
-        nastaveniVzhleduPostavy(): string {
-        return '/imges/img_Obr.png';
-    }
+        nastaveniVzhleduPostavy = '/imges/img_Obr.png';
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -141,9 +131,7 @@ abstract class Karta{
         poleKaretnichPolicek[pointer].style.pointerEvents="none" ;
         pointerPoradiVybraneKarty=undefined;
         console.log(poleVsechPostav[0]);
-        let a:number =this.damageKarty();
-        console.log(a);
-        return a;
+        return this.damageKarty();
     }
 }
 class SilnaRana extends Karta{
@@ -217,9 +205,7 @@ class Hrac{
             zdraviHraceCislo.innerText=`${this.Zdravi}`;
         }
     }
-    aktualniStavZdravi():number{
-        return this.Zdravi;
-    } 
+
     prohraHrace():void{
         poleVsechKaret=[];
         poleVsechPostav=[];
@@ -319,7 +305,6 @@ function interakceKartySPostavou():void{
         counterTahuKartou++
         pointerPoradiVybraneKarty=undefined;
         tahPostavy();
-        console.log(counterTahuKartou)
     }
     else{
         console.log(`karta neni vybrana`)
@@ -370,7 +355,6 @@ let soucasnyHrac:Hrac|null;
 
 function innit(){
     soucasnyHrac =new Hrac;
-    console.log(soucasnyHrac?.aktualniStavZdravi());
     for(let i =0; i<5; i++){
         pridaniPostav();
     }

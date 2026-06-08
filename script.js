@@ -9,13 +9,14 @@ const gameOverBackground = document.getElementById("gameOverBackground");
 const zdraviPostavy = document.getElementById("zdraviPostavy");
 const zdraviHrace = document.getElementById("zdraviHrace");
 const postava = document.getElementById("postava");
+const postavaName = document.getElementById("postavaName");
 const zdraviHraceCislo = document.getElementById("zdraviHrcaeCislo");
 class Postava {
     pocatecniZdravi;
     Zdravi;
     Damage;
     Name;
-    //abstrktni funkce, ktere prirazuji privatnim promenam vhodne hodnoty
+    //constructor
     constructor() {
         this.Zdravi = this.nastaveniZdravi();
         this.Damage = this.nastaveniDamage();
@@ -31,8 +32,9 @@ class Postava {
         this.zobrazeniPostavy();
     }
     zobrazeniPostavy() {
+        postavaName.innerText = this.Name;
         polickoPostavy.className = `${this.Name}`;
-        polickoPostavy.src = this.nastaveniVzhleduPostavy();
+        polickoPostavy.src = this.nastaveniVzhleduPostavy;
     }
     zmenseniZdraviPostavy(damage) {
         this.Zdravi -= damage;
@@ -50,9 +52,6 @@ class Postava {
         pridaniPostav();
         poleVsechPostav[0].inicizacePostavy();
     }
-    zdraviPostavy() {
-        return this.Zdravi;
-    }
     damagePostavy() {
         return this.Damage;
     }
@@ -69,9 +68,7 @@ class Vlk extends Postava {
         let pointer = Math.ceil((Math.floor((Math.random() * 4) * 100)) / 100);
         return 5 + pointer;
     }
-    nastaveniVzhleduPostavy() {
-        return '/imges/img_Vlk.png';
-    }
+    nastaveniVzhleduPostavy = '/imges/img_Vlk.png';
 }
 class Zlodej extends Postava {
     nastaveniJmenaPostavy() {
@@ -85,9 +82,7 @@ class Zlodej extends Postava {
         let pointer = Math.ceil((Math.floor((Math.random() * 5) * 100)) / 100);
         return 4 + pointer;
     }
-    nastaveniVzhleduPostavy() {
-        return '/imges/img_Zlodej.png';
-    }
+    nastaveniVzhleduPostavy = '/imges/img_Zlodej.png';
 }
 class Obr extends Postava {
     nastaveniJmenaPostavy() {
@@ -101,9 +96,7 @@ class Obr extends Postava {
         let pointer = Math.ceil((Math.floor((Math.random() * 6) * 100)) / 100);
         return 7 + pointer;
     }
-    nastaveniVzhleduPostavy() {
-        return '/imges/img_Obr.png';
-    }
+    nastaveniVzhleduPostavy = '/imges/img_Obr.png';
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //ODDELENI TRID KARTY A POSTAVY
@@ -116,9 +109,7 @@ class Karta {
         poleKaretnichPolicek[pointer].style.pointerEvents = "none";
         pointerPoradiVybraneKarty = undefined;
         console.log(poleVsechPostav[0]);
-        let a = this.damageKarty();
-        console.log(a);
-        return a;
+        return this.damageKarty();
     }
 }
 class SilnaRana extends Karta {
@@ -185,9 +176,6 @@ class Hrac {
             }
             zdraviHraceCislo.innerText = `${this.Zdravi}`;
         }
-    }
-    aktualniStavZdravi() {
-        return this.Zdravi;
     }
     prohraHrace() {
         poleVsechKaret = [];
@@ -267,7 +255,6 @@ function interakceKartySPostavou() {
         counterTahuKartou++;
         pointerPoradiVybraneKarty = undefined;
         tahPostavy();
-        console.log(counterTahuKartou);
     }
     else {
         console.log(`karta neni vybrana`);
@@ -314,7 +301,6 @@ function prohraHraceGlobal() {
 let soucasnyHrac;
 function innit() {
     soucasnyHrac = new Hrac;
-    console.log(soucasnyHrac?.aktualniStavZdravi());
     for (let i = 0; i < 5; i++) {
         pridaniPostav();
     }
