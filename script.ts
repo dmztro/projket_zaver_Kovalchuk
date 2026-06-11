@@ -291,6 +291,7 @@ function mazaniKaret(){
 let pointerPoradiVybraneKarty:number|undefined;
 
 function prevzatiPoradiKarty(poradiKarty:number):void{
+    poleKaretnichPolicek[poradiKarty].style.border=`2px solid red`
     pointerPoradiVybraneKarty =poradiKarty;
 }
 
@@ -314,6 +315,9 @@ function interakceKartySPostavou():void{
         mazaniKaret();
         zobrazeniKaret();
         counterTahuKartou=0;
+    }
+    for(let karta of poleKaretnichPolicek){
+        karta.style.border=`0px`
     }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////

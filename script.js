@@ -243,6 +243,7 @@ function mazaniKaret() {
 //Oddeleni pro interkcni funcke
 let pointerPoradiVybraneKarty;
 function prevzatiPoradiKarty(poradiKarty) {
+    poleKaretnichPolicek[poradiKarty].style.border = `2px solid red`;
     pointerPoradiVybraneKarty = poradiKarty;
 }
 let counterTahuKartou = 0;
@@ -264,6 +265,9 @@ function interakceKartySPostavou() {
         mazaniKaret();
         zobrazeniKaret();
         counterTahuKartou = 0;
+    }
+    for (let karta of poleKaretnichPolicek) {
+        karta.style.border = `0px`;
     }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////
